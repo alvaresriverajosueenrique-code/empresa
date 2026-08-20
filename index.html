@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolf Market - Tienda de Ofertas</title>
+
+    <style>
+        :root {
+            --naranja-temu: #F05A28;
+            --rojo-oferta: #E53935;
+            --gris-claro: #F5F5F5;
+            --texto-gris: #666666;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--gris-claro);
+            color: #333;
+        }
+
+        #cabecera {
+            background-color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; 
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--naranja-temu);
+        }
+
+        .buscador {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 20px;
+            display: flex;
+        }
+
+        .buscador input {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .buscador input:focus {
+            border-color: var(--naranja-temu);
+        }
+
+        .buscador button {
+            padding: 10px 20px;
+            background-color: var(--naranja-temu);
+            color: white;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .buscador button:hover {
+            background-color: #d94d1f;
+        }
+
+        #banner-ofertas {
+            background: linear-gradient(90deg, #FF7E5F, #FEB47B);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 20px;
+        }
+
+        #banner-ofertas h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        #banner-ofertas p {
+            margin: 10px 0 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        #catalogo {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #catalogo h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .producto-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .producto-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover; 
+        }
+
+        .producto-card h3 {
+            padding: 15px 15px 5px;
+            margin: 0;
+            font-size: 1rem;
+            color: #333;
+            height: 40px; 
+            overflow: hidden;
+        }
+
+        .precios {
+            padding: 0 15px 15px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .precio-actual {
+            color: var(--rojo-oferta);
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        .precio-original {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 0.9rem;
+        }
+
+        .descuento {
+            background-color: #FFE5E5;
+            color: var(--rojo-oferta);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .vendidos {
+            padding: 0 15px 15px;
+            margin: 0;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        #contacto {
+            background-color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 4px solid var(--naranja-temu);
+            margin-top: 40px;
+        }
+
+        #contacto h2 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .contacto-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contacto-item {
+            flex: 1;
+            min-width: 200px;
+            padding: 20px;
+            background-color: var(--gris-claro);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .contacto-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .contacto-item h3 {
+            color: var(--naranja-temu);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .contacto-item p {
+            color: var(--texto-gris);
+            margin: 0 0 10px 0;
+            font-size: 0.95rem;
+        }
+
+        .contacto-item a {
+            color: var(--naranja-temu);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contacto-item a:hover {
+            text-decoration: underline;
+        }
+
+        #pie-pagina {
+            background-color: #333;
+            color: #aaa;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        @media (max-width: 768px) {
+            #cabecera {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .buscador {
+                width: 100%;
+                margin: 0;
+            }
+            #banner-ofertas h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="cabecera">
+        <div class="logo">Wolf Market</div>
+        <div class="buscador">
+            <input type="text" placeholder="Buscar productos baratos...">
+            <button>Buscar</button>
+        </div>
+    </header>
+
+    <section id="banner-ofertas">
+        <h1>Ofertas Relampago! Hasta 90% de descuento</h1>
+        <p>Envio gratis en tu primer pedido | Nuevos usuarios: $0.01</p>
+    </section>
+
+    <main id="catalogo">
+        <h2>Recomendados para ti</h2>
+        
+        <div class="productos-grid">
+            
+            <!-- Producto 1 -->
+            <div class="producto-card">
+                <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400" alt="Auriculares">
+                <h3>Auriculares Inalambricos Pro</h3>
+                <div class="precios">
+                    <span class="precio-actual">$5.99</span>
+                    <span class="precio-original">$29.99</span>
+                    <span class="descuento">-80%</span>
+                </div>
+                <p class="vendidos">Ya vendidos: 10,234</p>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="producto-card">
+                <img src="https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=400" alt="Reloj Inteligente">
+                <h3>Reloj Inteligente Deportivo</h3>
+                <div class="precios">
+                    <span class="precio-actual">$12.50</span>
+                    <span class="precio-original">$89.00</span>
+                    <span class="descuento">-85%</span>
+                </div>
+                <p class="vendidos">Ya vendidos: 5,120</p>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="producto-card">
+                <img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400" alt="Cuidado Facial">
+                <h3>Set de Cuidado Facial Premium</h3>
+                <div class="precios">
+                    <span class="precio-actual">$3.20</span>
+                    <span class="precio-original">$15.00</span>
+                    <span class="descuento">-78%</span>
+                </div>
+                <p class="vendidos">Ya vendidos: 22,450</p>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="producto-card">
+                <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400" alt="Libro de Historia">
+                <h3>Libro de Historia Universal</h3>
+                <div class="precios">
+                    <span class="precio-actual">$10.99</span>
+                    <span class="precio-original">$20.99</span>
+                    <span class="descuento">-48%</span>
+                </div>
+                <p class="vendidos">Ya vendidos: 8,340</p>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="producto-card">
+                <img src="https://images.unsplash.com/photo-1517842645767-c639042777db?w=400" alt="Cuadernos">
+                <h3>Pack de Cuadernos Premium</h3>
+                <div class="precios">
+                    <span class="precio-actual">$4.50</span>
+                    <span class="precio-original">$12.00</span>
+                    <span class="descuento">-62%</span>
+                </div>
+                <p class="vendidos">Ya vendidos: 15,890</p>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="producto-card">
+                <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400" alt="Smartphone">
+                <h3>Smartphone Honor X9b 5G</h3>
+                <div class="precios">
+                    <span class="precio-actual">$189.99</span>
+                    <span class="precio-original">$299.99</span>
+                    <span class="descuento">-36%</span>
+                </div>
+                <p class="vendidos">Ya vendidos: 3,210</p>
+            </div>
+
+            <!-- Producto 7 -->
+            <div class="producto-card">
+                <img src="https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=400" alt="Mochila">
+                <h3>Mochila Escolar Resistente al Agua</h3>
+                <div class="precios">
+                    <span class="precio-actual">$14.99</span>
+                    <span class="precio-original">$35.00</span>
+                    <span class="descuento">-57%</span>
+                </div>
+                <p class="vendidos">Ya vendidos: 7,450</p>
+            </div>
+
+            <!-- Producto 8: Camisa -->
+            <div class="producto-card">
+                <img src="https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400" alt="Camisa">
+                <h3>Camisa Casual de Algodon Premium</h3>
+                <div class="precios">
+                    <span class="precio-actual">$8.99</span>
+                    <span class="precio-original">$24.99</span>
+                    <span class="descuento">-64%</span>
+                </div>
+                <p class="vendidos">Ya vendidos: 12,780</p>
+            </div>
+
+        </div>
+    </main>
+
+    <section id="contacto">
+        <h2>Necesitas ayuda? Contactanos</h2>
+        <div class="contacto-grid">
+            
+            <div class="contacto-item">
+                <h3>WhatsApp</h3>
+                <p>Atencion rapida de Lunes a Sabado</p>
+                <a href="https://wa.me/503234567" target="_blank">+503 234 567</a>
+            </div>
+
+             <div class="contacto-item">
+                <h3>Correo Electronico</h3>
+                <p>Para dudas sobre pedidos o devoluciones</p>
+                <a href="mailto:soporte@wolfmarket.com">soporte@wolfmarket.com</a>
+            </div>
+
+            <div class="contacto-item">
+                <h3> Ubicacion</h3>
+                <p>Oficinas Centrales</p>
+                <p>Avenida principal, San Salvador</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="pie-pagina">
+        <p>&copy; 2026 Wolf Market. Todos los derechos reservados. | Politica de Privacidad | Terminos de Uso</p>
+    </footer>
+
+</body>
+</html>
